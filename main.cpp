@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <map>
 #include "memory.cpp"
+#include "registers.cpp"
 using namespace std;
 
 // Define opcode mapping
@@ -86,8 +87,11 @@ int main(){
     Memory memory(MEMORY_SIZE_BYTES);
 
     // Initialize registers
+    
+    //string arr_registers[REGISTER_SIZE];
+
     const int REGISTER_SIZE = 4;
-    string arr_registers[REGISTER_SIZE];
+    Register reg(REGISTER_SIZE);
 
     // Open the file containing instructions
     ifstream infile("source.txt");
@@ -112,11 +116,13 @@ int main(){
 
     // Perform operations based on instructions
     for (int i = 0; i < memoryData.size(); ++i){
-        if(readInstruction(memoryData[i]) == "01")(
-            //load function
-            
-        )
+        if(readInstruction(memoryData[i]) == "01"){
+            int registerIndex = stoi(readRegister(memoryData[i]));
+            reg.writeByte(registerIndex, getValue(memoryData[i]));
+        }
     }
+
+    reg.printRegisterContents(0,3);
 
     return 0;
 }
