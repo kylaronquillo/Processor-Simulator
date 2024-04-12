@@ -14,7 +14,8 @@ map<string, string> opcodeMap = {
     {"ADD", "03"}, // add values
     {"SUB", "04"}, // subtract values
     {"JMP", "05"}, // jump address
-    {"PRT", "06"} // print
+    {"PRT", "06"}, // print
+    {"EXT", "07"} // exit program
 };
 
 // Define register mapping
@@ -22,7 +23,11 @@ map<string, string> registerMap = {
     {"R0", "00"},
     {"R1", "01"},
     {"R2", "02"},
-    {"R3", "03"}
+    {"R3", "03"},
+    {"R4", "04"},
+    {"R5", "05"},
+    {"R6", "06"},
+    {"R7", "07"}
 };
 
 struct Instruction {
@@ -41,9 +46,12 @@ string parseInstruction(const string& line) {
         ins.operand2 = line.substr(7);
         binary = ins.opcode + ins.operand1 + ins.operand2;
     }
-    else{
+    else if(ins.opcode == "05" || ins.opcode == "06"){
         ins.operand1 = line.substr(4);
         binary = ins.opcode + ins.operand1;
+    }
+    else{
+        binary = ins.opcode;
     }
     return binary;
 }
@@ -63,27 +71,6 @@ int getValue(const string& line){
     return x;
 }
 
-// class CPU{
-// private:
-
-// public:
-
-//     void asg(const string& reg, int value){
-//         registerMap[reg] = value;
-//     }
-//     void str(const string& reg, int value){
-//         registerMap[reg] = value;
-//     }
-//     void add(const string& reg1, const string& reg2, const string& dest){
-//         registerMap[dest] = registerMap[reg1] - registerMap[reg2];
-//     }
-//     void jump(int address) {
-//         int pc = address;
-//     }
-    
-
-// };
-
 int main(){
     int pc = 0;
     //int numIns = 0;
@@ -94,9 +81,6 @@ int main(){
     Memory memory(MEMORY_SIZE_BYTES);
 
     // Initialize registers
-    
-    //string arr_registers[REGISTER_SIZE];
-
     const int REGISTER_SIZE = 4;
     Register reg(REGISTER_SIZE);
 
@@ -114,40 +98,47 @@ int main(){
         memory.writeByte(address++, instruc);
     }
     infile.close();
-
-    
-
     cout << endl;
+    
     // Access the data vector
     const vector<string>& memoryData = memory.getDataVector();
 
     // Perform operations based on instructions
-    for (int i = 0; i < memoryData.size(); ++i){
-        if(readInstruction(memoryData[i]) == "01"){
-            int registerIndex = stoi(readRegister(memoryData[i]));
-            reg.writeByte(registerIndex, getValue(memoryData[i]));
+    for (; pc < memoryData.size(); ++pc){
+        if(readInstruction(memoryData[pc]) == "01"){
+            int registerIndex = stoi(readRegister(memoryData[pc]));
+            reg.writeByte(registerIndex, getValue(memoryData[pc]));
         }
-        if(readInstruction(memoryData[i]) == "02"){
-            int registerIndex = stoi(readRegister(memoryData[i]));
+        if(readInstruction(memoryData[pc]) == "02"){
+            int registerIndex = stoi(readRegister(memoryData[pc]));
             string value = to_string(reg.readByte(registerIndex));
-            memory.writeByte(getValue(memoryData[i]), value);
+            memory.writeByte(getValue(memoryData[pc]), value);
         }
-        if(readInstruction(memoryData[i]) == "03"){
-            int registerIndex = stoi(readRegister(memoryData[i]));
-            int sum = getValue(memoryData[i]) + reg.readByte(registerIndex);
+        if(readInstruction(memoryData[pc]) == "03"){
+            int registerIndex = stoi(readRegister(memoryData[pc]));
+            int sum = getValue(memoryData[pc]) + reg.readByte(registerIndex);
             reg.writeByte(registerIndex, sum);
         }
-        if(readInstruction(memoryData[i]) == "04"){
-            int registerIndex = stoi(readRegister(memoryData[i]));
-            int diff = getValue(memoryData[i]) - reg.readByte(registerIndex);
+        if(readInstruction(memoryData[pc]) == "04"){
+            int registerIndex = stoi(readRegister(memoryData[pc]));
+            int diff = getValue(memoryData[pc]) - reg.readByte(registerIndex);
             reg.writeByte(registerIndex, diff);
         }
-        if(readInstruction(memoryData[i]) == "05"){
-
+        if(readInstruction(memoryData[pc]) == "05"){
+            int registerIndex = stoi(readRegister(memoryData[pc]));
+            pc = registerIndex - 1;
+        }
+        if(readInstruction(memoryData[pc]) == "06"){
+            int registerIndex = stoi(readRegister(memoryData[pc]));
+            memory.printMemoryContents(registerIndex,registerIndex);
+        }
+        if(readInstruction(memoryData[pc]) == "07"){
+            break;
         }
     }
-    memory.printMemoryContents(0,10); // Print the contents of memory
-    reg.printRegisterContents(0,3);
+
+    memory.printMemoryContents(0, memoryData.size()); // Print the contents of memory
+    reg.printRegisterContents(0,7);
 
     return 0;
 }

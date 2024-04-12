@@ -16,7 +16,7 @@ public:
 
     int readByte(int address) const{
         if (address < 0 || address >= REGISTER_SIZE){
-            cerr << "Error: Invalid register 1" << endl;
+            cerr << "Error: Invalid register" << endl;
             return 0;
         }
         return data[address];
@@ -24,7 +24,7 @@ public:
 
     void writeByte(int address, const int& value){
         if(address < 0 || address >= REGISTER_SIZE){
-            cerr << "Error: Invalid register 2" << endl;
+            cerr << "Error: Invalid register" << endl;
             return;
         }
         data[address] = value;
@@ -32,7 +32,7 @@ public:
 
     void printRegisterContents(int startAddress, int endAddress) const{
         if(startAddress < 0 || startAddress >= REGISTER_SIZE || endAddress < 0 || endAddress >= REGISTER_SIZE || startAddress > endAddress){
-            cerr << "Error: Invalid register 3" << endl;
+            cerr << "Error: Invalid register" << endl;
             return;
         }
 
