@@ -3,7 +3,7 @@
 #include <string>
 #include <cstdint>
 #include <map>
-#include "memory.cpp"
+#include "Processor-Simulator/memory.cpp"
 using namespace std;
 
 // Define opcode mapping
