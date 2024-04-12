@@ -18,7 +18,7 @@ For the following opcodes: `<OPERATION>`
 
 ## Registers
 <br> `R0` Register 0
-<br> `R1`Register 1
+<br> `R1` Register 1
 <br> `R2` Register 2
 <br> `R3` Register 3
 <br> `R4` Register 4
@@ -27,5 +27,5 @@ For the following opcodes: `<OPERATION>`
 <br> `R7` Register 7 
 
 ## Constraints: 
-Only allow jump forwards
-Only up to 4 registers
+- Only allow jump forwards
+- Only up to 4 registers
