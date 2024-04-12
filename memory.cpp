@@ -34,14 +34,15 @@ public:
 
     // Print the contents of the memory within a specified range
     void printMemoryContents(int startAddress, int endAddress) const {
-        if (startAddress < 0 || startAddress >= MEMORY_SIZE || endAddress < 0 || endAddress >= MEMORY_SIZE || startAddress > endAddress) {
+        if (startAddress < 0 || startAddress >= MEMORY_SIZE || endAddress < 0 || endAddress > MEMORY_SIZE || startAddress > endAddress) {
             cerr << "Error: Invalid memory range" << endl;
             return;
         }
 
         cout << "Memory Contents:" << endl;
         for (int i = startAddress; i <= endAddress; ++i) {
-            cout << "Address " << i << ": " << data[i] << endl;
+            if(!data[i].empty())
+                cout << "Address " << i << ": " << data[i] << endl;
         }
     }
 
