@@ -34,10 +34,17 @@ struct Instruction {
 // Function to parse an instruction line
 string parseInstruction(const string& line) {
     Instruction ins;
+    string binary;
     ins.opcode = opcodeMap[line.substr(0, 3)]; // ASG (0, 1 ,2)
-    ins.operand1 = registerMap[line.substr(4, 2)]; //R1 (4, 5)
-    ins.operand2 = line.substr(7);
-    string binary = ins.opcode + ins.operand1 + ins.operand2;
+    if(ins.opcode == "01" || ins.opcode == "02" || ins.opcode == "03" || ins.opcode == "04"){
+        ins.operand1 = registerMap[line.substr(4, 2)]; //R1 (4, 5)
+        ins.operand2 = line.substr(7);
+        binary = ins.opcode + ins.operand1 + ins.operand2;
+    }
+    else{
+        ins.operand1 = line.substr(4);
+        binary = ins.opcode + ins.operand1;
+    }
     return binary;
 }
 
@@ -108,7 +115,7 @@ int main(){
     }
     infile.close();
 
-    memory.printMemoryContents(0,10); // Print the contents of memory
+    
 
     cout << endl;
     // Access the data vector
@@ -120,8 +127,26 @@ int main(){
             int registerIndex = stoi(readRegister(memoryData[i]));
             reg.writeByte(registerIndex, getValue(memoryData[i]));
         }
-    }
+        if(readInstruction(memoryData[i]) == "02"){
+            int registerIndex = stoi(readRegister(memoryData[i]));
+            string value = to_string(reg.readByte(registerIndex));
+            memory.writeByte(getValue(memoryData[i]), value);
+        }
+        if(readInstruction(memoryData[i]) == "03"){
+            int registerIndex = stoi(readRegister(memoryData[i]));
+            int sum = getValue(memoryData[i]) + reg.readByte(registerIndex);
+            reg.writeByte(registerIndex, sum);
+        }
+        if(readInstruction(memoryData[i]) == "04"){
+            int registerIndex = stoi(readRegister(memoryData[i]));
+            int diff = getValue(memoryData[i]) - reg.readByte(registerIndex);
+            reg.writeByte(registerIndex, diff);
+        }
+        if(readInstruction(memoryData[i]) == "05"){
 
+        }
+    }
+    memory.printMemoryContents(0,10); // Print the contents of memory
     reg.printRegisterContents(0,3);
 
     return 0;
