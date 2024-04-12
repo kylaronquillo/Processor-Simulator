@@ -14,7 +14,7 @@ For the following opcodes: `<OPERATION> <ADDRESS>`
     <br> `JMP` Branching of Memory
     <br> `PRT` Printing of Memory <br> <br>
 For the following opcodes: `<OPERATION>`
-    <br> `EXT` Exit <br>
+    <br> `EXT` Exit 
 
 ## Registers
 <br> `R0` Register 0
