@@ -6,20 +6,20 @@ Compile and run the 'main.cpp' file. Change the text in the 'source.txt' to test
 
 ## Instruction Sets
 For the following opcodes: `<OPERATION> <REGISTER> <VALUE>`
-    `ASG` <br> Assign Value :  Transfer data from memory into a register 
-    `STR` <br> Store Value : Transfer data from a register into memory
-    `ADD` <br> Addition of Values
-    `SUB` <br> Subtraction of Values
+    <br> `ASG` Assign Value :  Transfer data from memory into a register 
+    <br> `STR` Store Value : Transfer data from a register into memory
+    <br> `ADD` Addition of Values
+    <br> `SUB`Subtraction of Values
 For the following opcodes: `<OPERATION> <ADDRESS>`
-    `JMP` <br> Branching of Memory
-    `PRT` <br> Printing of Memory
+    <br> `JMP` Branching of Memory
+    <br> `PRT`Printing of Memory
 For the following opcodes: `<OPERATION>`
-    `EXT` <br> Exit 
+    <br> `EXT`Exit 
 
 ## Registers
-`R0` <br> Register 0
-`R1` <br> Register 1
-`R2` <br> Register 2
+<br> `R0` Register 0
+<br> `R1`Register 1
+<br> `R2` Register 2
 `R3` <br> Register 3
 `R4` <br> Register 4
 `R5` <br> Register 5
