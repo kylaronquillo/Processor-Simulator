@@ -9,10 +9,10 @@ For the following opcodes: `<OPERATION> <REGISTER> <VALUE>`
     <br> `ASG` Assign Value :  Transfer data from memory into a register 
     <br> `STR` Store Value : Transfer data from a register into memory
     <br> `ADD` Addition of Values
-    <br> `SUB`Subtraction of Values <br> <br>
+    <br> `SUB` Subtraction of Values <br> <br>
 For the following opcodes: `<OPERATION> <ADDRESS>`
     <br> `JMP` Branching of Memory
-    <br> `PRT`Printing of Memory <br> <br>
+    <br> `PRT` Printing of Memory <br> <br>
 For the following opcodes: `<OPERATION>`
     <br> `EXT` Exit <br>
 
