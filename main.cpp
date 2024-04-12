@@ -3,25 +3,25 @@
 #include <string>
 #include <cstdint>
 #include <map>
-#include "Processor-Simulator/memory.cpp"
+#include "memory.cpp"
 using namespace std;
 
 // Define opcode mapping
 map<string, string> opcodeMap = {
-    {"ASG", "0000"},
-    {"STR", "0001"},
-    {"AAD", "0010"},
-    {"SAD", "0011"},
-    {"JAD", "0100"},
-    {"PRT", "0101"}
+    {"ASG", "01"}, // assign value :  transfer data from memory into a register 
+    {"STR", "02"}, // store value : transfer data from a register into memory
+    {"ADD", "03"}, // add values
+    {"SUB", "04"}, // subtract values
+    {"JMP", "05"}, // jump address
+    {"PRT", "06"} // print
 };
 
 // Define register mapping
 map<string, string> registerMap = {
-    {"R0", "0000"},
-    {"R1", "0001"},
-    {"R2", "0010"},
-    {"R3", "0011"},
+    {"R0", "00"},
+    {"R1", "01"},
+    {"R2", "02"},
+    {"R3", "03"}
 };
 
 struct Instruction {
@@ -33,9 +33,6 @@ struct Instruction {
 // Function to parse an instruction line
 string parseInstruction(const string& line) {
     Instruction ins;
-    // cout << line.substr(0, 3)<<endl;
-    // cout << line.substr(4, 2)<<endl;
-    // cout << line.substr(7)<<endl;
     ins.opcode = opcodeMap[line.substr(0, 3)]; // ASG (0, 1 ,2)
     ins.operand1 = registerMap[line.substr(4, 2)]; //R1 (4, 5)
     ins.operand2 = line.substr(7);
@@ -44,49 +41,45 @@ string parseInstruction(const string& line) {
 }
 
 string readInstruction(const string& line){
-    string instruc = line.substr(0, 4);
+    string instruc = line.substr(0, 2);
     return instruc;
 }
 
-string readInstruction(const string& line){
-    string regis = line.substr(5, 4);
+string readRegister(const string& line){
+    string regis = line.substr(2, 2);
     return regis;
 }
 
 int getValue(const string& line){
-    int x = stoi(line.substr(5, 4));
+    int x = stoi(line.substr(4));
     return x;
 }
 
-string readRegister(const string& line){
-    Instruction ins;
-    ins.opcode = line.substr(5, 4);
-    return ins.opcode;
-}
+// class CPU{
+// private:
+
+// public:
+
+//     void asg(const string& reg, int value){
+//         registerMap[reg] = value;
+//     }
+//     void str(const string& reg, int value){
+//         registerMap[reg] = value;
+//     }
+//     void add(const string& reg1, const string& reg2, const string& dest){
+//         registerMap[dest] = registerMap[reg1] - registerMap[reg2];
+//     }
+//     void jump(int address) {
+//         int pc = address;
+//     }
+    
+
+// };
 
 int main(){
-    int numIns = 0;
+    int pc = 0;
+    //int numIns = 0;
     string line;
-
-    cout << "Number of Instructions: ";
-    cin >> numIns;
-    cin.ignore(); 
-
-    // Input to file
-    cout << "\nWrite to File (source.txt):\n";
-    ofstream source("source.txt");
-    for(int i = 0; i < numIns; i++){
-        getline(cin, line);
-        source << line << endl;
-    }
-    source.close();
-
-    // Open the file containing instructions
-    ifstream infile("source.txt");
-    if (!infile) {
-        cerr << "Error: Unable to open file." << endl;
-        return 1;
-    }
 
     // Initialize memory
     const int MEMORY_SIZE_BYTES = 64 * 1024; // 64KB memory size
@@ -96,25 +89,31 @@ int main(){
     const int REGISTER_SIZE = 4;
     string arr_registers[REGISTER_SIZE];
 
+    // Open the file containing instructions
+    ifstream infile("source.txt");
+    if (!infile) {
+        cerr << "Error: Unable to open file." << endl;
+        return 1;
+    }
+
     // Read each instruction from the file and write it to memory
     int address = 0;
-
     while (getline(infile, line)) {
         string instruc = parseInstruction(line);
         memory.writeByte(address++, instruc);
     }
     infile.close();
 
-    memory.printMemoryContents(0,numIns); // Print the contents of memory
+    memory.printMemoryContents(0,10); // Print the contents of memory
 
     cout << endl;
     // Access the data vector
     const vector<string>& memoryData = memory.getDataVector();
 
-
     // Perform operations based on instructions
     for (int i = 0; i < memoryData.size(); ++i){
-        if(readInstruction(memoryData[i]) == "0000")(
+        if(readInstruction(memoryData[i]) == "01")(
+            //load function
             
         )
     }
